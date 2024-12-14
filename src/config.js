@@ -27,7 +27,9 @@ export async function config(envFile) {
       };
       return acc;
     }, {});
-    const additionalEnvs = await askQuestion("Do you need additional envs? (yes/no): ");
+    const additionalEnvs = await askQuestion(
+      "Do you need additional envs? (yes/no): ",
+    );
     addMore = additionalEnvs.toLowerCase() === "yes";
   }
 
@@ -38,7 +40,9 @@ export async function config(envFile) {
     let defaultValue = await askQuestion("Enter default value (optional): ");
 
     while (!isValidType(defaultValue, type || "string")) {
-      console.error(`Invalid default value for type "${type}". Please try again.`);
+      console.error(
+        `Invalid default value for type "${type}". Please try again.`,
+      );
       defaultValue = await askQuestion("Enter a valid default value: ");
     }
 
@@ -54,7 +58,8 @@ export async function config(envFile) {
 
   rl.close();
 
-  const configFile = CONFIG_FILES.find((file) => fs.existsSync(file)) || CONFIG_FILES[0];
+  const configFile =
+    CONFIG_FILES.find((file) => fs.existsSync(file)) || CONFIG_FILES[0];
   fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
   handleMessage(`Configuration saved to ${configFile}`);
 }

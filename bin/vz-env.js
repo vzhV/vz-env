@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name("vz-env")
   .description("CLI to manage and validate environment variables")
-  .version("1.0.0");
+  .version("1.0.4");
 
 program
   .command("sync")

@@ -9,7 +9,10 @@ export function encrypt(file, password) {
     const key = crypto.createHash("sha256").update(password).digest();
     const iv = crypto.randomBytes(IV_LENGTH);
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
-    const encrypted = Buffer.concat([cipher.update(content, "utf-8"), cipher.final()]);
+    const encrypted = Buffer.concat([
+      cipher.update(content, "utf-8"),
+      cipher.final(),
+    ]);
     const encryptedData = Buffer.concat([iv, encrypted]);
 
     fs.writeFileSync(`${file}.enc`, encryptedData);
@@ -27,7 +30,10 @@ export function decrypt(file, password) {
     const encryptedContent = encryptedData.slice(IV_LENGTH);
     const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
 
-    const decrypted = Buffer.concat([decipher.update(encryptedContent), decipher.final()]);
+    const decrypted = Buffer.concat([
+      decipher.update(encryptedContent),
+      decipher.final(),
+    ]);
     const outputFile = file.replace(".enc", "");
     fs.writeFileSync(outputFile, decrypted.toString("utf-8"));
     handleMessage(`File decrypted to "${outputFile}".`);
@@ -35,7 +41,9 @@ export function decrypt(file, password) {
     if (error.code === "ERR_OSSL_BAD_DECRYPT") {
       handleError("Decryption failed: Incorrect password or corrupted file.");
     } else {
-      handleError(`An unexpected error occurred during decryption. Most likely the file is missing.`);
+      handleError(
+        `An unexpected error occurred during decryption. Most likely the file is missing.`,
+      );
     }
   }
 }

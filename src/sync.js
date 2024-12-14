@@ -9,7 +9,9 @@ export async function sync(sourceFile, targetFile) {
     }
 
     const sourceVars = parseEnvFile(sourceFile);
-    const targetVars = fs.existsSync(targetFile) ? parseEnvFile(targetFile) : {};
+    const targetVars = fs.existsSync(targetFile)
+      ? parseEnvFile(targetFile)
+      : {};
     const newVars = {};
 
     for (const [key, value] of Object.entries(sourceVars)) {
@@ -25,9 +27,10 @@ export async function sync(sourceFile, targetFile) {
 
     for (const key of Object.keys(newVars)) {
       newVars[key] = await new Promise((resolve) =>
-        rl.question(`Value for ${key} (default: "${newVars[key]}"): `, (answer) =>
-          resolve(answer || newVars[key])
-        )
+        rl.question(
+          `Value for ${key} (default: "${newVars[key]}"): `,
+          (answer) => resolve(answer || newVars[key]),
+        ),
       );
     }
 

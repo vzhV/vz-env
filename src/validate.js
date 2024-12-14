@@ -6,7 +6,9 @@ export function validate(envFile) {
   try {
     const configFile = findConfigFile();
     if (!configFile) {
-      handleError("No configuration file found (.vz-envrc or vz-env.config.json).");
+      handleError(
+        "No configuration file found (.vz-envrc or vz-env.config.json).",
+      );
     }
 
     const config = JSON.parse(fs.readFileSync(configFile, "utf-8"));
@@ -19,13 +21,21 @@ export function validate(envFile) {
         errors.push(`Missing required variable: ${key}`);
       }
 
-      if (rules.type && envVars[key] && !validateType(envVars[key], rules.type)) {
-        errors.push(`Invalid type for variable: ${key}. Expected ${rules.type}.`);
+      if (
+        rules.type &&
+        envVars[key] &&
+        !validateType(envVars[key], rules.type)
+      ) {
+        errors.push(
+          `Invalid type for variable: ${key}. Expected ${rules.type}.`,
+        );
       }
     }
 
     if (errors.length > 0) {
-      handleError(`Validation failed with the following errors:\n- ${errors.join("\n- ")}`);
+      handleError(
+        `Validation failed with the following errors:\n- ${errors.join("\n- ")}`,
+      );
     }
 
     handleMessage("Validation passed.");
